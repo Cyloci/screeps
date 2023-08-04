@@ -1,55 +1,48 @@
-# Screeps Typescript Starter
+# screeps-starter-rust
 
-Screeps Typescript Starter is a starting point for a Screeps AI written in Typescript. It provides everything you need to start writing your AI whilst leaving `main.ts` as empty as possible.
+Starter Rust AI for [Screeps: World][screeps], the JavaScript-based MMO game.
 
-## Basic Usage
+This uses the [`screeps-game-api`] bindings from the [rustyscreeps] organization.
 
-You will need:
+While it's possible to compile using [`wasm-pack`] directly using the Node.js target,
+some modifications are needed to load the output within the Screep environment, so it's
+recommended to use [`cargo-screeps`] for building and deploying your code.
 
-- [Node.JS](https://nodejs.org/en/download) (10.x)
-- A Package Manager ([Yarn](https://yarnpkg.com/en/docs/getting-started) or [npm](https://docs.npmjs.com/getting-started/installing-node))
-- Rollup CLI (Optional, install via `npm install -g rollup`)
+The documentation is currently a bit sparse. API docs which list functions one
+can use are located at https://docs.rs/screeps-game-api/.
 
-Download the latest source [here](https://github.com/screepers/screeps-typescript-starter/archive/master.zip) and extract it to a folder.
+Almost all crates on https://crates.io/ are usable (only things which interact with OS
+apis are broken).
 
-Open the folder in your terminal and run your package manager to install the required packages and TypeScript declaration files:
+Quickstart:
 
-```bash
-# npm
-npm install
+```sh
+# Install CLI dependency:
+cargo install cargo-screeps
 
-# yarn
-yarn
+# Clone the starter
+git clone https://github.com/rustyscreeps/screeps-starter-rust.git
+cd screeps-starter-rust
+
+# Copy the example config, and set up at least one deployment mode
+cp example-screeps.toml screeps.toml
+nano screeps.toml
+# configure credentials (API key) if you'd like to upload directly,
+# or a directory to copy to if you'd prepfer to use the game client to deploy
+
+# build tool:
+cargo screeps --help
+# compile the module without deploying anywhere
+cargo screeps build
+# compile plus deploy to the configured 'upload' mode; any section name you
+# set up in your screeps.toml for different environments and servers can be used
+cargo screeps deploy -m upload
+# or if you've set a default mode in your configuration, simply use:
+cargo screeps deploy
 ```
 
-Fire up your preferred editor with typescript installed and you are good to go!
-
-### Rollup and code upload
-
-Screeps Typescript Starter uses rollup to compile your typescript and upload it to a screeps server.
-
-Move or copy `screeps.sample.json` to `screeps.json` and edit it, changing the credentials and optionally adding or removing some of the destinations.
-
-Running `rollup -c` will compile your code and do a "dry run", preparing the code for upload but not actually pushing it. Running `rollup -c --environment DEST:main` will compile your code, and then upload it to a screeps server using the `main` config from `screeps.json`.
-
-You can use `-cw` instead of `-c` to automatically re-run when your source code changes - for example, `rollup -cw --environment DEST:main` will automatically upload your code to the `main` configuration every time your code is changed.
-
-Finally, there are also NPM scripts that serve as aliases for these commands in `package.json` for IDE integration. Running `npm run push-main` is equivalent to `rollup -c --environment DEST:main`, and `npm run watch-sim` is equivalent to `rollup -cw --dest sim`.
-
-#### Important! To upload code to a private server, you must have [screepsmod-auth](https://github.com/ScreepsMods/screepsmod-auth) installed and configured!
-
-## Typings
-
-The type definitions for Screeps come from [typed-screeps](https://github.com/screepers/typed-screeps). If you find a problem or have a suggestion, please open an issue there.
-
-## Documentation
-
-We've also spent some time reworking the documentation from the ground-up, which is now generated through [Gitbooks](https://www.gitbook.com/). Includes all the essentials to get you up and running with Screeps AI development in TypeScript, as well as various other tips and tricks to further improve your development workflow.
-
-Maintaining the docs will also become a more community-focused effort, which means you too, can take part in improving the docs for this starter kit.
-
-To visit the docs, [click here](https://screepers.gitbook.io/screeps-typescript-starter/).
-
-## Contributing
-
-Issues, Pull Requests, and contribution to the docs are welcome! See our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+[screeps]: https://screeps.com/
+[`wasm-pack`]: https://rustwasm.github.io/wasm-pack/
+[`cargo-screeps`]: https://github.com/rustyscreeps/cargo-screeps/
+[`screeps-game-api`]: https://github.com/rustyscreeps/screeps-game-api/
+[rustyscreeps]: https://github.com/rustyscreeps/
